@@ -2,31 +2,20 @@ const express = require("express");
 
 const router = express.Router();
 
-const Book = require("../models/bookModel");
+const {
+  createBook,
+  getBooks,
+  getBook,
+} = require("../controllers/bookController");
 
 // Get all books
-router.get("/", (req, res) => {
-  res.json({ message: "Get Books" });
-});
+router.get("/", getBooks);
 
 // Get a single book
-router.get("/:id", (req, res) => {
-  res.json({ message: "Get a single book" });
-});
+router.get("/:id", getBook);
 
 // POST a new book
-router.post("/", async (req, res) => {
-  const { title, author } = req.body;
-
-  try {
-    const newBook = await Book.create({ title, author });
-    res.status(201).json(newBook);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-
-  res.json({ message: "Post a new book" });
-});
+router.post("/", createBook);
 
 // Update a book
 router.patch("/:id", (req, res) => {
