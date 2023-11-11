@@ -2,6 +2,8 @@ const express = require("express");
 
 const router = express.Router();
 
+const Book = require("../models/bookModel");
+
 // Get all books
 router.get("/", (req, res) => {
   res.json({ message: "Get Books" });
@@ -13,7 +15,16 @@ router.get("/:id", (req, res) => {
 });
 
 // POST a new book
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
+  const { title, author } = req.body;
+
+  try {
+    const newBook = await Book.create({ title, author });
+    res.status(201).json(newBook);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+
   res.json({ message: "Post a new book" });
 });
 
