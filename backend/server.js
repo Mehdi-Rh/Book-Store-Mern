@@ -28,7 +28,7 @@ mongoose
     //listen for requests
 
     const port = process.env.PORT;
-    app.listen(4000, () => {
+    app.listen(port, () => {
       console.log("connecting to db & listening for requests on port " + port);
     });
   })

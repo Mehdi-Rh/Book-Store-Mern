@@ -6,6 +6,8 @@ const {
   createBook,
   getBooks,
   getBook,
+  deleteBook,
+  updateBook,
 } = require("../controllers/bookController");
 
 // Get all books
@@ -18,13 +20,9 @@ router.get("/:id", getBook);
 router.post("/", createBook);
 
 // Update a book
-router.patch("/:id", (req, res) => {
-  res.json({ message: "Update a  book" });
-});
+router.patch("/:id", updateBook);
 
 // Delete a book
-router.delete("/:id", (req, res) => {
-  res.json({ message: "Remove a book" });
-});
+router.delete("/:id", deleteBook);
 
 module.exports = router;
