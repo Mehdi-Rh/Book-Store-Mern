@@ -1,20 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { useSelector, useDispatch } from 'react-redux';
-import BookCard from '../../components/bookCard/BookCard';
-import NBContainer from '../newBook/NBContainer';
-import './BookCardContainer.css';
-import { addBookAction, getBooksAction } from '../../redux/books/books';
+import React, { useState, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { useSelector, useDispatch } from "react-redux";
+import BookCard from "../../components/bookCard/BookCard";
+import NBContainer from "../newBook/NBContainer";
+import "./BookCardContainer.css";
+import { addBookAction, getBooksAction } from "../../redux/books/books";
+
+import { useGetAllBooks } from "../../hooks/books";
 
 const BookCardContainer = () => {
-  const [newTitle, setNewTitle] = useState('');
-  const [newAuthor, setNewAuthor] = useState('');
+  const [newTitle, setNewTitle] = useState("");
+  const [newAuthor, setNewAuthor] = useState("");
   const [bookShow, setBookShow] = useState([]);
+
+  // useGetAllBooks();
 
   const BookList = useSelector((state) => state.books);
 
   useEffect(() => {
-    setBookShow((BookList.books.map((book) => <BookCard key={book.item_id} book={book} />)));
+    setBookShow(
+      BookList.books.map((book) => <BookCard key={book.item_id} book={book} />)
+    );
   }, [BookList]);
 
   const handleChangeTitle = (e) => {
@@ -33,23 +39,21 @@ const BookCardContainer = () => {
     if (newTitle.trim().length === 0 || newAuthor.trim().length === 0) return;
 
     const book = {
-      item_id: uuidv4(),
+      // item_id: uuidv4(),
       title: newTitle,
       author: newAuthor,
-      category: 'Fiction',
+      category: "Fiction",
     };
 
     dispatch(addBookAction(book));
-    setNewTitle('');
-    setNewAuthor('');
+    setNewTitle("");
+    setNewAuthor("");
     dispatch(getBooksAction);
   };
 
   return (
     <div>
-      <div>
-        { bookShow }
-      </div>
+      <div>{bookShow}</div>
       <div className="line" />
       <NBContainer
         handleChangeTitle={handleChangeTitle}
@@ -59,7 +63,6 @@ const BookCardContainer = () => {
         handleClick={handleClick}
       />
     </div>
-
   );
 };
 

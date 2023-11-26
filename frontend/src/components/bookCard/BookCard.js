@@ -1,14 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
-import './BookCard.css';
-import { CircularProgressbar } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
-import { removeBookAction } from '../../redux/books/books';
+import React from "react";
+import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
+import "./BookCard.css";
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+import { removeBookAction } from "../../redux/books/books";
 
 const BookCard = (props) => {
   const { book } = props;
-  const { item_id: id, title, author } = book;
+  const { item_id: id, title, author, category } = book;
 
   const dispatch = useDispatch();
   const handleClickRemove = (e) => {
@@ -20,7 +20,7 @@ const BookCard = (props) => {
     <div className="bookCard">
       <div className="bookLeft">
         <div className="bookInfo">
-          <span className="schoolOf">Action</span>
+          <span className="schoolOf">{category || "Action"}</span>
           <span className="title">{title}</span>
           <span className="author">{author}</span>
         </div>
@@ -39,20 +39,18 @@ const BookCard = (props) => {
         </div>
       </div>
       <div className="bookMiddle">
-        <div className="circularProgressbar"><CircularProgressbar value={0} text="0%" /></div>
+        <div className="circularProgressbar">
+          <CircularProgressbar value={0} text="0%" />
+        </div>
         <div className="percentComplete">
           <span className="percent">0%</span>
           <span className="completed">Completed</span>
         </div>
       </div>
       <div className="bookRight">
-        <span className="currentChapter">
-          CURRENT CHAPTER
-        </span>
+        <span className="currentChapter">CURRENT CHAPTER</span>
         <span className="ccValue">Introduction</span>
-        <span className="updateProgress">
-          UPDATE PROGRESS
-        </span>
+        <span className="updateProgress">UPDATE PROGRESS</span>
       </div>
     </div>
   );
@@ -71,8 +69,8 @@ BookCard.propTypes = {
 BookCard.defaultProps = {
   // book: {},
   // schoolOf: 'SchoolOf',
-  title: 'Title',
-  author: 'Author',
+  title: "Title",
+  author: "Author",
   // currentChapter: 'Introduction',
   // percentComplete: 0,
 };

@@ -24,17 +24,16 @@ const getBook = async (req, res) => {
 
 // create a new book
 const createBook = async (req, res) => {
-  const { title, author } = req.body;
+  const { title, author, category = "Action" } = req.body;
 
   // add doc to db
   try {
-    const newBook = await Book.create({ title, author });
+    const newBook = await Book.create({ title, author, category });
     res.status(201).json(newBook);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
-
-  res.json({ message: "Post a new book" });
+  // res.json({ message: "Post a new book" });
 };
 
 // update a book

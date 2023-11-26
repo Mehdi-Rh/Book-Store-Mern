@@ -12,6 +12,10 @@ const workoutSchema = new schema(
       type: String,
       required: true,
     },
+    category: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
