@@ -1,12 +1,12 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
 // Action types
-const addBook = 'bookStore/books/addBook';
-const removeBook = 'bookStore/books/removeBook';
-const getBooks = 'bookStore/books/getBooks';
+const addBook = "addBook";
+const removeBook = "removeBook";
+const getBooks = "getBooks";
 
-const baseUrl = 'https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi';
-const apiId = 'JUWUUSwLtCmHou4Ag9hk';
+// const baseUrl = ("https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi");
+const apiId = "JUWUUSwLtCmHou4Ag9hk";
 
 const initialState = {
   books: [],
@@ -15,48 +15,53 @@ const initialState = {
 
 const bookReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'bookStore/books/getBooks/fulfilled':
-      console.log(action.payload);
+    case "getBooks/fulfilled":
       return {
         books: action.payload,
-        status: 'Fetch book list succeded',
+        status: "Fetch book list succeded",
       };
-    case 'bookStore/books/addBook/fulfilled':
+    case "addBook/fulfilled":
       return {
         books: [...state.books, action.payload],
-        status: 'Add book succeded',
+        status: "Add book succeded",
       };
 
-    case 'bookStore/books/removeBook/fulfilled':
+    case "removeBook/fulfilled":
       return {
         books: state.books.filter((item) => item.item_id !== action.payload),
-        status: 'Delete book succeded',
+        status: "Delete book succeded",
       };
     default:
       return state;
   }
 };
 
+const baseUrl = "http://localhost:4000/api/books/";
+
 export const getBooksAction = createAsyncThunk(getBooks, async () => {
-  const response = await fetch(`${baseUrl}/apps/${apiId}/books`);
+  const response = await fetch(baseUrl);
   const data = await response.json();
-  const keys = Object.keys(data);
-  const arrayData = [];
-  keys.map((key) => arrayData.push({
-    item_id: key,
-    title: data[key][0].title,
-    author: data[key][0].author,
-    category: data[key][0].category,
-  }));
-  return arrayData || [];
+  return data;
+  console.log("data", data);
+  // const keys = Object.keys(data);
+  // const arrayData = [];
+  // keys.map((key) =>
+  //   arrayData.push({
+  //     item_id: key,
+  //     title: data[key][0].title,
+  //     author: data[key][0].author,
+  //     category: data[key][0].category,
+  //   })
+  // );
+  // return arrayData || [];
 });
 
 export const addBookAction = createAsyncThunk(addBook, async (book) => {
-  await fetch(`${baseUrl}/apps/${apiId}/books`, {
-    method: 'POST',
+  await fetch(baseUrl, {
+    method: "POST",
     body: JSON.stringify(book),
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   });
   return book;
@@ -64,7 +69,7 @@ export const addBookAction = createAsyncThunk(addBook, async (book) => {
 
 export const removeBookAction = createAsyncThunk(removeBook, async (id) => {
   await fetch(`${baseUrl}/apps/${apiId}/books/${id}`, {
-    method: 'DELETE',
+    method: "DELETE",
     body: JSON.stringify({
       item_id: id,
     }),
